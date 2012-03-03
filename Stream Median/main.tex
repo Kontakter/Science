@@ -1,0 +1,184 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1,T2A]{fontenc}
+\usepackage[english,russian]{babel}
+\usepackage{expdlist}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+%\usepackage{amsthm}
+\usepackage{ifpdf}
+\usepackage{moreverb}
+\usepackage{enumerate}
+\def\verbatimtabsize{4\relax}
+
+\emergencystretch=25pt
+
+\usepackage{listings}
+\lstloadlanguages{C,[ANSI]C++,Clean,make,Fortran}%Загружаемые языки
+\lstset{extendedchars=true, %Чтобы русские буквы в комментариях были
+        commentstyle=\it,
+        stringstyle=,
+        language=C++, %Язык по умолчанию
+        belowcaptionskip=5pt}
+
+\ifpdf
+    \usepackage[pdftex]{graphicx}
+\else
+    \usepackage{graphicx}
+\fi
+
+\usepackage{geometry}
+\geometry{left=2cm}
+\geometry{right=1.5cm}
+\geometry{top=1cm}
+\geometry{bottom=2cm}
+
+\setlength{\parindent}{1cm}
+
+\newcommand{\set}[1]{\left \{ #1 \right \}}
+\newcommand{\setst}[2]{\left \{ #1 \mid #2 \right \}}
+\newcommand{\abs}[1]{\left| #1 \right|}
+
+\providecommand{\R}{\mathbb{R}}
+\providecommand{\Q}{\mathbb{Q}}
+\providecommand{\Z}{\mathbb{Z}}
+\providecommand{\markthis}[1]{{\tt[#1]}\par}
+
+\newtheorem{theorem}{Теорема}
+\newtheorem{exttheorem}{Теорема}
+\newtheorem{lemma}[theorem]{Лемма}
+\newtheorem{corollary}[theorem]{Следствие}
+\newtheorem{definition}[theorem]{Определение}
+
+\newcommand{\refeq}[1]{(\ref{eq:#1})}
+\newcommand{\refth}[1]{теореме~\ref{th:#1}}
+\newcommand{\reflm}[1]{лемме~\ref{lm:#1}}
+\newcommand{\refsec}[1]{разделе~\ref{sec:#1}}
+\newcommand{\refcor}[1]{следствии~\ref{cor:#1}}
+\newcommand{\refalgo}[1]{алгоритме~\ref{algo:#1}}
+
+\newenvironment{proof}{\par\noindent%
+{\bf Доказательство.\par\nopagebreak}}{\unskip\nobreak\enskip$\square$\par\bigskip}
+\newenvironment{proofof}[1]{\medskip\par\noindent%
+{\bf Доказательство
+#1.\par\nopagebreak}}{\unskip\nobreak\enskip$\square$\par\bigskip}
+
+\newcommand{\rk}{\mathop{\mathrm{rk}}\nolimits}
+
+\renewcommand{\epsilon}{\varepsilon}
+
+\frenchspacing
+\sloppy
+
+\begin{document}
+
+
+
+\subsection{Модель вычислений}
+% What about vanila stream model?
+В данной работе мы будем работать с большими объемами данных.
+Причем данные будут представлены некоторым потоком $\sigma$, и,
+в отличии от алгоритмов во внешней памяти мы будем рассматривать
+алгоритмы, которые не пользуются внешней памятью.
+Более конкретно, все наши алгоритмы будут устроены следующим образом.
+На вход поступает некоторый поток чисел, который читается один раз
+(очень большой, например 1Тб), наша задача
+используя минимальное количество памяти и времени посчитать необходимую некоторую функцию $f$,
+зависящую  от потока. Причем, как правило, функция зависит лишь от множества чисел, которые
+содержаться в потоке и не зависит от их порядка.
+
+Обозначим, поток числе за $\sigma = \langle a_1, \ldots, a_m \rangle$, где для всех $i$
+верно, что $a_i \in [1, \ldots, n]$.
+
+Как правило числа $n$ и $m$ очень большие, можно предаставлять, что $n = 2^{64}$, а $m = 10^{12}$.
+Наша цель придумать алгоритм, время работы которого состовляет $o\left(\min(n, m)\right)$.
+Наилучшая оценка, которую хочется достичь,~--- это $O(\log n + \log m)$.
+
+Для многих задач можно доказать, что нижняя оценка на время работы состовляет $\Omega(n + m)$.
+Поэтому часто удобно ослабить модель. Это можно сделать двумя способами:
+\begin{enumerate}
+\item
+Разрешить делать более одного прохода по потоку.
+
+\item
+% Улучшить обозначения
+Решать задачу приближенно, то есть вычислиьт функцию $\hat{f}(\sigma)$,
+зависящую от параметров $\epsilon$ и $\delta$,
+которая удовлетворяет условию $P \left( \abs{f - \hat{f}}  > f \cdot \epsilon \right) < \delta$.
+\end{enumerate}
+
+
+
+
+\subsection{Примеры алгоритмов}
+
+Первый момент, сумма чисел. Необходимо просто сложить все числа, используемая память $O(\log m + \log n)$.
+
+Нулевой момент, количество различных чисел в потоке. Это вам расскажет/рассказал Максим.
+
+Нижние оценки.
+\begin{theorem}
+    Любой детерминированный алгоритм, решающий задачу поиска количества различных элементов
+    требует $\Omega(n)$ памяти.
+\end{theorem}
+
+\begin{proof}
+    % Изложить доказательство более понятным и последовательным языком.
+    % Дать ссылку на задачу про EQ
+    Воспользуемся тем, что коммуникационная сложность задача \textsc{EQ} состовляет $n$.
+    Пусть мы научились решать задачу поиска различных элементов за время $o(n)$.
+    Рассмотрим экземпляр задачи \textsc{EQ}, то есть две бинарные строки $x$ и $y$ длины $n$.
+    Составим из них поток чисел $\sigma$ длины $2n$:
+    $$
+        a_i = 
+        \begin{cases}
+            x_i + 2 * (i - 1) & \text{если $1 \leq i \leq n$} \\
+            y_i + 2 * (i - n - 1) & \text{если $n + 1 \leq i \leq 2n$}
+        \end{cases}
+    $$
+    Заметим, что $x = y$, тогда и только тогда, когда в потоке $n$ различных чисел.
+    Покажем, как, используя решение задачи \textsc{количество различных}, получить решение задачи
+    \textsc{EQ}. Пусть и Алиса и Боб знают алгоритм $A$. Алиса преобразует свое $x$ в
+    соотвествующую часть потока чисел, после чего посылает Бобу конечное состояние алгоритма.
+    Боб продолжает исполнение алгоритма на своей послоедовательности и в конце получает ответ про количество
+    различных элементов, то есть про равенство $x$ и $y$, противоречие.
+\end{proof}
+
+\begin{theorem}
+    % разобраться с доказательством этого факта
+    Задача \textsc{большинство} требует $\Omega{m}$ памяти.
+\end{theorem}
+
+
+
+\subsection{Поиск медианы}
+
+Рассмотрим следующую задачу, как обычно дан поток чисел, требуется
+вычислить медиану. Известно, что в обычном случае эту задачу можно решить
+за линейное время с помощью алгоритма Таржана деления на пятерки.
+Однако этот алгоритм требует использование дополнительного места.
+% Продумать историю насчет того, что впринципе данный алгоритм применим,
+% однако требует дополнительно двух хранилищ памяти. И вообще говоря хочется
+% обойтись без них (представьте, что у вас тонкий клиент, и вы делаете запрос
+% в огромную базу данных. Однако, в таком случае более оптимален рандомизиоронный алгоритм
+
+\begin{theorem}
+    Поиск медианы в потоке за один проход требует $\Omega(n)$ памяти.
+\end{theorem}
+
+\subsubsection{Алгоритм Манро-Патерсона}
+
+Но задачу можно решить эффективно, если разрешается читать поток несколько раз.
+За два прохода задачу можно решить за время $\tilda{O}\left(\sqrt(n)\right)$.
+За $p$ проходов задачу можно решить за время $\tilda{O}\left(n^{1 / p}\right)$.
+То есть за $\log n$ проходов можно добиться использования логарифмической памяти.
+
+
+
+
+
+\end{document}
+
