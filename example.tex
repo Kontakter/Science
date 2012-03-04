@@ -1,0 +1,83 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1,T2A]{fontenc}
+\usepackage[english,russian]{babel}
+\usepackage{expdlist}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+%\usepackage{amsthm}
+\usepackage{ifpdf}
+\usepackage{moreverb}
+\usepackage{enumerate}
+\def\verbatimtabsize{4\relax}
+
+\emergencystretch=25pt
+
+\usepackage{listings}
+\lstloadlanguages{C,[ANSI]C++,Clean,make,Fortran}%Загружаемые языки
+\lstset{extendedchars=true, %Чтобы русские буквы в комментариях были
+        commentstyle=\it,
+        stringstyle=,
+        language=C++, %Язык по умолчанию
+        belowcaptionskip=5pt}
+
+\ifpdf
+    \usepackage[pdftex]{graphicx}
+\else
+    \usepackage{graphicx}
+\fi
+
+\usepackage{geometry}
+\geometry{left=2cm}
+\geometry{right=1.5cm}
+\geometry{top=1cm}
+\geometry{bottom=2cm}
+
+\setlength{\parindent}{1cm}
+
+\newcommand{\set}[1]{\left \{ #1 \right \}}
+\newcommand{\setst}[2]{\left \{ #1 \mid #2 \right \}}
+\newcommand{\abs}[1]{\left| #1 \right|}
+
+\providecommand{\R}{\mathbb{R}}
+\providecommand{\Q}{\mathbb{Q}}
+\providecommand{\Z}{\mathbb{Z}}
+\providecommand{\markthis}[1]{{\tt[#1]}\par}
+
+\newtheorem{theorem}{Теорема}
+\newtheorem{exttheorem}{Теорема}
+\newtheorem{lemma}[theorem]{Лемма}
+\newtheorem{corollary}[theorem]{Следствие}
+\newtheorem{definition}[theorem]{Определение}
+\newtheorem{claim}[theorem]{Утверждение}
+
+\newcommand{\refeq}[1]{(\ref{eq:#1})}
+\newcommand{\refth}[1]{теореме~\ref{th:#1}}
+\newcommand{\reflm}[1]{лемме~\ref{lm:#1}}
+\newcommand{\refsec}[1]{разделе~\ref{sec:#1}}
+\newcommand{\refcor}[1]{следствии~\ref{cor:#1}}
+\newcommand{\refalgo}[1]{алгоритме~\ref{algo:#1}}
+
+\newenvironment{proof}{\par\noindent%
+{\bf Доказательство.\par\nopagebreak}}{\unskip\nobreak\enskip$\square$\par\bigskip}
+\newenvironment{proofof}[1]{\medskip\par\noindent%
+{\bf Доказательство
+#1.\par\nopagebreak}}{\unskip\nobreak\enskip$\square$\par\bigskip}
+
+\newcommand{\rk}{\mathop{\mathrm{rk}}\nolimits}
+\newcommand{\sort}{\mathsf{sort}}
+\newcommand{\evens}{\mathsf{evens}}
+\newcommand{\med}{\mathsf{med}}
+
+\renewcommand{\epsilon}{\varepsilon}
+
+\frenchspacing
+\sloppy
+
+\begin{document}
+
+\end{document}
+
